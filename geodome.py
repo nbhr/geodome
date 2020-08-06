@@ -77,7 +77,7 @@ class GeodesicDome:
         ax.set_zlim(-2, 2)
         plt.show()
 
-    def tesselate(self, iter=1):
+    def tessellate(self, iter=1):
         def newvert(v0, v1):
             v = v0 + v1
             v /= np.linalg.norm(v)
@@ -137,7 +137,7 @@ class GeodesicDome:
 g = GeodesicDome()
 
 # Subdivide N times
-g.tesselate(3)
+g.tessellate(3)
 
 # Check the number of vertices / faces
 print(f'num of vertices = {len(g.v)}, num of faces = {len(g.f)}')
