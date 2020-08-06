@@ -40,8 +40,8 @@ Instead, as explained in https://mae.ufl.edu/~uhk/PLATONIC-SOLIDS.pdf, we can de
 4. The height `c` of the pentagonal pyramid (the distance from the pentagon to the top) is `c = sqrt(3/4 - a^2)`.
 5. The distance `d` between the pentagons is `d = sqrt(3/4 - (b-a)^2)`.
 6. The top/bottom vertices are `(0, 0, +/- (c + d/2))`.
-7. The vertices of the upper pentagon are `(b, 2nπ/5, d/2)`, where `n=0,...4`.
-8. The vertices of the lower pentagon are `(b, (2n+1)π/5, -d/2)`, where `n=0,...4`.
+7. The vertices of the upper pentagon are `(b, 2nπ/5, d/2)`, where `n=0, ..., 4`.
+8. The vertices of the lower pentagon are `(b, (2n+1)π/5, -d/2)`, where `n=0, ..., 4`.
 
 Finally we can convert the cylindrical coordinates to Cartesian by `(x, y, z) = (r cosθ, r sinΘ, z)` as usual.
 
