@@ -110,6 +110,9 @@ class GeodesicDome:
         return self
 
     def face_normal(self):
+        """
+        This function is not needed in most cases, since the vertex position is identical to its normal.
+        """
         tri = self.v[self.f]
         n = np.cross(tri[:, 1,:] - tri[:, 0,:], tri[:, 2,:] - tri[:, 0,:])
         n /= np.linalg.norm(n, axis=0)
