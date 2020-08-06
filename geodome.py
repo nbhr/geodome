@@ -42,6 +42,10 @@ class GeodesicDome:
         # normalize the radius
         self.v *= (1 / self.v[0, 2])
 
+        # fix super small values to zero
+        self.tol = 1e-15
+        self.v[np.abs(self.v) < self.tol] = 0
+
         ## faces ##
         self.f = np.array([
             [2, 0, 1],
@@ -107,6 +111,7 @@ class GeodesicDome:
             self.v = v
             self.f = np.array(f2)
 
+        self.v[np.abs(self.v) < self.tol] = 0
         return self
 
     def face_normal(self):
