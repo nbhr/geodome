@@ -6,7 +6,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 class TriangleMesh:
     def plot3D(self):
-        fig = plt.figure()
+        fig = plt.figure(figsize=(8,8))
         ax = fig.add_subplot(111, projection='3d')
 
         # Create a list of 3D vertex arrays for each face
@@ -24,6 +24,7 @@ class TriangleMesh:
         ax.set_zlim(-2, 2)
 
         # Show the result
+        plt.tight_layout()
         plt.show()
 
 
