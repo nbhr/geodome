@@ -1,4 +1,4 @@
-# What is this?
+# A simple geodesic dome and Fibonacci sphere mesh generator
 
 This repository has two scripts, [`geodome.py`](./geodome.py) for geodesic dome and [`fibonacci.py`](./fibonacci.py) for Fibonacci sphere.
 Each script generates a triangle mesh aligned with the unit sphere, saves it as PLY, and plots it in 3D by matplotlib.
