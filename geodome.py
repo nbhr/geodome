@@ -72,13 +72,23 @@ class GeodesicDome:
 
     def plot3D(self):
         fig = plt.figure()
-        ax = Axes3D(fig)
-        tri = Poly3DCollection(self.v[self.f].reshape((-1, 3)))
-        tri.set_edgecolor('k')
+        ax = fig.add_subplot(111, projection='3d')
+
+        # Create a list of 3D vertex arrays for each face
+        faces = [self.v[face] for face in self.f]
+
+        # Create the 3D polygon collection
+        tri = Poly3DCollection(faces, edgecolor='k')
+
+        # Add the collection to the 3D plot
         ax.add_collection3d(tri)
+
+        # Set the axis limits
         ax.set_xlim(-2, 2)
         ax.set_ylim(-2, 2)
         ax.set_zlim(-2, 2)
+
+        # Show the result
         plt.show()
 
     def tessellate(self, iter=1):
