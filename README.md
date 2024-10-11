@@ -1,6 +1,7 @@
 # What is this?
 
 This repository has two scripts, [`geodome.py`](./geodome.py) for geodesic dome and [`fibonacci.py`](./fibonacci.py) for Fibonacci sphere.
+Each script generates a triangle mesh aligned with the unit sphere, and plot it in 3D by matplotlib.
 
 ## `geodome.py` for Geodesic dome
 
@@ -14,7 +15,7 @@ This is a tiny (100 lines or so) script to calculate the geometry of geodesic do
 
 ## `fibonacci.py` for Fibonacci sphere
 
-This is a numpy version of [Evenly distributing n points on a sphere](https://stackoverflow.com/a/26127012).  The script also computes triangle edges using [`scipy.spatial.ConvexHull`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.ConvexHull.html).
+This is a numpy version of [Evenly distributing n points on a sphere](https://stackoverflow.com/a/26127012).  The script computes triangle edges using [`scipy.spatial.ConvexHull`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.ConvexHull.html).
 
 * The first vertex is always at `(0, 0, 1)`, and the last vertex is always at `(0, 0, -1)`.
 * The vertices are on the unit shpere of radius 1; meaning that the vertex position is identical to the vertex normal.
