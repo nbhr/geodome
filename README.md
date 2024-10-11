@@ -46,10 +46,10 @@ g.save_as_ply('a.ply')
 g.plot3D()
 ```
 
-## Fibonacci Sphere
+## Fibonacci sphere
 
 ```:python
-# Fibonacci Sphere of 1000 points
+# Fibonacci sphere of 1000 points
 f = FibonacciSphere(1000)
 
 # Check the number of vertices / faces
@@ -111,7 +111,7 @@ The tessellation is implemented by subdividing each triangle into four subtriang
   * Level 3: 642 vertices, 1280 faces
 
 
-## Fibonacci Sphere
+## Fibonacci sphere
 
 Please check the following references.
 

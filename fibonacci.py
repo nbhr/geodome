@@ -1,14 +1,11 @@
 import numpy as np
-import sys
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from scipy.spatial import ConvexHull
-
 from geodome import TriangleMesh
 
 
-# based on https://stackoverflow.com/a/26127012
+# This is based on https://stackoverflow.com/a/26127012
+# if you need vertices only (no mesh triangles), you can
+# simply copy-and-paste this function to your code.
 def fibonacci_sphere(samples):
     phi = np.pi * (np.sqrt(5.) - 1.)  # golden angle in radians
 
@@ -19,6 +16,7 @@ def fibonacci_sphere(samples):
     x = np.cos(theta) * radius
     z = np.sin(theta) * radius
 
+    # make v[0] == (0,0,1) and v[-1] == (0,0,-1)
     return np.stack([z, x, y]).T
 
 
@@ -34,7 +32,7 @@ class FibonacciSphere(TriangleMesh):
 
 
 if __name__ == "__main__":
-    # Fibonacci Sphere of 1000 points
+    # Fibonacci sphere of 1000 points
     f = FibonacciSphere(1000)
 
     # Check the number of vertices / faces
