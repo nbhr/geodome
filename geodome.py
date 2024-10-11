@@ -4,7 +4,53 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
-class GeodesicDome:
+class TriangleMesh:
+    def plot3D(self):
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+
+        # Create a list of 3D vertex arrays for each face
+        faces = [self.v[face] for face in self.f]
+
+        # Create the 3D polygon collection
+        tri = Poly3DCollection(faces, edgecolor='k')
+
+        # Add the collection to the 3D plot
+        ax.add_collection3d(tri)
+
+        # Set the axis limits
+        ax.set_xlim(-2, 2)
+        ax.set_ylim(-2, 2)
+        ax.set_zlim(-2, 2)
+
+        # Show the result
+        plt.show()
+
+
+    def save_as_ply(self, filename):
+        with open(filename, 'w') as fp:
+            fp.write('ply\n')
+            fp.write('format ascii 1.0\n')
+            fp.write(f'element vertex {len(self.v)}\n')
+            fp.write('property float x\n')
+            fp.write('property float y\n')
+            fp.write('property float z\n')
+            fp.write(f'element face {len(self.f)}\n')
+            fp.write('property list uchar int vertex_indices\n')
+            fp.write('end_header\n')
+            np.savetxt(fp, self.v)
+            f2 = np.hstack([(np.ones(len(self.f), dtype=np.int32) * 3).reshape((-1, 1)), self.f])
+            np.savetxt(fp, f2, fmt='%d')
+
+    def force_ccw(self):
+        v = self.v[self.f]
+        e01 = v[:,1] - v[:,0]
+        e02 = v[:,2] - v[:,0]
+        fn = np.cross(e01, e02)
+        dir = np.einsum('ij,ij->i', fn, v[:,0])
+        self.f[dir < 0, 0], self.f[dir < 0, 1] = self.f[dir < 0, 1], self.f[dir < 0, 0]
+
+class GeodesicDome(TriangleMesh):
     """
     Geodesic Dome of Nv vertices and Nf faces.
 
@@ -70,27 +116,6 @@ class GeodesicDome:
             [10, 11, 6],
         ])
 
-    def plot3D(self):
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-
-        # Create a list of 3D vertex arrays for each face
-        faces = [self.v[face] for face in self.f]
-
-        # Create the 3D polygon collection
-        tri = Poly3DCollection(faces, edgecolor='k')
-
-        # Add the collection to the 3D plot
-        ax.add_collection3d(tri)
-
-        # Set the axis limits
-        ax.set_xlim(-2, 2)
-        ax.set_ylim(-2, 2)
-        ax.set_zlim(-2, 2)
-
-        # Show the result
-        plt.show()
-
     def tessellate(self, iter=1):
         def newvert(v0, v1):
             v = v0 + v1
@@ -133,32 +158,19 @@ class GeodesicDome:
         n /= np.linalg.norm(n, axis=0)
         return n
 
-    def save_as_ply(self, filename):
-        with open(filename, 'w') as fp:
-            fp.write('ply\n')
-            fp.write('format ascii 1.0\n')
-            fp.write(f'element vertex {len(self.v)}\n')
-            fp.write('property float x\n')
-            fp.write('property float y\n')
-            fp.write('property float z\n')
-            fp.write(f'element face {len(self.f)}\n')
-            fp.write('property list uchar int vertex_indices\n')
-            fp.write('end_header\n')
-            np.savetxt(fp, self.v)
-            f2 = np.hstack([(np.ones(len(self.f), dtype=np.int32) * 3).reshape((-1, 1)), self.f])
-            np.savetxt(fp, f2, fmt='%d')
 
-# Icosahedron
-g = GeodesicDome()
+if __name__ == "__main__":
+    # Icosahedron
+    g = GeodesicDome()
 
-# Subdivide N times
-g.tessellate(3)
+    # Subdivide N times
+    g.tessellate(3)
 
-# Check the number of vertices / faces
-print(f'num of vertices = {len(g.v)}, num of faces = {len(g.f)}')
+    # Check the number of vertices / faces
+    print(f'num of vertices = {len(g.v)}, num of faces = {len(g.f)}')
 
-# Save as PLY
-g.save_as_ply('a.ply')
+    # Save as PLY
+    g.save_as_ply('a.ply')
 
-# 3D plot
-g.plot3D()
+    # 3D plot
+    g.plot3D()

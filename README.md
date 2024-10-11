@@ -1,13 +1,38 @@
+# What is this?
+
+This repository has two scripts, [`geodome.py`](./geodome.py) for geodesic dome and [`fibonacci.py`](./fibonacci.py) for Fibonacci sphere.
+
+## `geodome.py` for Geodesic dome
+
+This is a tiny (100 lines or so) script to calculate the geometry of geodesic domes by subdividing an initial icosahedron recursively.  The calculated geodesic domes satisfy:
+
+* The first vertex is always at `(0, 0, 1)`, and the 12th vertex is always at `(0, 0, -1)`.
+* The 25th and 32nd vertices are always at `(0, 1, 0)` and `(0, -1, 0)` respectively (available if tessallation lv >= 1).
+* The 102th and 125th vertices are always at `(-1, 0, 0)` and `(1, 0, 0)` respectively (available if tessallation lv >= 2).
+* The vertices are on the unit shpere of radius 1; meaning that the vertex position is identical to the vertex normal.
+* The face vertices are stored in CCW order.
+
+## `fibonacci.py` for Fibonacci sphere
+
+This is a numpy version of [Evenly distributing n points on a sphere](https://stackoverflow.com/a/26127012).  The script also computes triangle edges using [`scipy.spatial.ConvexHull`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.ConvexHull.html).
+
+* The first vertex is always at `(0, 0, 1)`, and the last vertex is always at `(0, 0, -1)`.
+* The vertices are on the unit shpere of radius 1; meaning that the vertex position is identical to the vertex normal.
+* The face vertices are stored in CCW order.
+
+
 # Usage
 
-```
+## Geodesic Dome
+
+```:python
 # Icosahedron
 g = GeodesicDome()
 
 # Subdivide N times
 g.tessellate(3)
 
-# Check the number of vertices / faces
+# Check the numbers of vertices / faces
 print(f'num of vertices = {len(g.v)}, num of faces = {len(g.f)}')
 
 # Save as PLY
@@ -17,17 +42,27 @@ g.save_as_ply('a.ply')
 g.plot3D()
 ```
 
-# Numbers of Vertices / Faces / Edges
+## Fibonacci Sphere
 
-* Level 0 == icosahedron has 12 vertices, 20 faces, and 30 edges (and satisfies Euler formula V + F - E = 2, of course).
-* Level `n` has `10 * 4^n + 2` vertices, `20 * 4^n` faces, and `20 * 4^n * 3 / 2` edges.
-  * Level 1: 42 vertices, 80 faces
-  * Level 2: 162 vertices, 320 faces
-  * Level 3: 642 vertices, 1280 faces
+```:python
+# Fibonacci Sphere of 1000 points
+f = FibonacciSphere(1000)
+
+# Check the number of vertices / faces
+print(f'num of vertices = {len(f.v)}, num of faces = {len(f.f)}')
+
+# Save as PLY
+f.save_as_ply('a.ply')
+
+# 3D plot
+f.plot3D()
+```
 
 # Algorithm
 
-## Level 0 == Icosahedron
+## Geodesic Dome
+
+### Level 0 == Icosahedron
 
 As explained in [Wikipedia](https://en.wikipedia.org/wiki/Regular_icosahedron), a unit icosahedron can be defined as a circular permutations of `(0, +/-1, +/-φ)`, where `φ = (1 + sqrt(5)) / 2`.
 This definition is simple, but not easy to use for some scenarios since none of the vertices are on an axis.
@@ -45,7 +80,7 @@ Instead, as explained in https://mae.ufl.edu/~uhk/PLATONIC-SOLIDS.pdf, we can de
 
 Finally we can convert the cylindrical coordinates to Cartesian by `(x, y, z) = (r cosθ, r sinΘ, z)` as usual.
 
-## Level n == Tessellation of Level (n-1)
+### Level n == Tessellation of Level (n-1)
 
 The tessellation is implemented by subdividing each triangle into four subtriangles.
 
@@ -62,3 +97,20 @@ The tessellation is implemented by subdividing each triangle into four subtriang
        \ /                  \ /
         O                    O
   ```
+
+### Numbers of Vertices / Faces / Edges
+
+* Level 0 == icosahedron has 12 vertices, 20 faces, and 30 edges (and satisfies Euler formula V + F - E = 2, of course).
+* Level `n` has `10 * 4^n + 2` vertices, `20 * 4^n` faces, and `20 * 4^n * 3 / 2` edges.
+  * Level 1: 42 vertices, 80 faces
+  * Level 2: 162 vertices, 320 faces
+  * Level 3: 642 vertices, 1280 faces
+
+
+## Fibonacci Sphere
+
+Please check the following references.
+
+- [Evenly distributing n points on a sphere](https://stackoverflow.com/a/26127012)
+- [Álvaro González, "Measurement of areas on a sphere using Fibonacci and latitude-longitude lattices"](https://arxiv.org/abs/0912.4540)
+
